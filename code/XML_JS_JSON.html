@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Lab 10 - XML, JavaScript and JSON</title>
+	<meta charset="utf-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<link href="styles.css" rel="stylesheet">
+
+<script type="text/javascript">
+		
+		
+function convertXMLtoJSON() {
+	
+	let allbooks = []
+	
+	if(window.XMLHttpRequest){
+		xmlhttp=new XMLHttpRequest();
+	}
+	else {
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	
+	// load external file
+	xmlhttp.open("GET","Books.xml",false);
+	xmlhttp.send();
+	xmlDoc=xmlhttp.responseXML;
+	
+	// store each node list
+	books = xmlDoc.getElementsByTagName("book");
+	if(books){
+		// get each element
+		for (var i = 0; i < books.length; i++)
+		{
+			// store information
+			author = books[i].getElementsByTagName("author");
+			author = author[0].textContent;
+
+         title = books[i].getElementsByTagName("title");
+			title = title[0].textContent;
+
+         genre = books[i].getElementsByTagName("genre");
+			genre = genre[0].textContent;
+
+         price = books[i].getElementsByTagName("price");
+			price = price[0].textContent;
+
+         pub = books[i].getElementsByTagName("publish_date");
+			pub = pub[0].textContent;
+
+         desc = books[i].getElementsByTagName("description");
+			desc = desc[0].textContent;
+			desc = desc.replace(/(\r\n|\n|\r)/gm, "");
+
+			// create a string with information
+			var text = '{"author\":"' + author + '\", "title":"' + title + '", "genre":"' + genre + '", "price":"';
+         
+         text += price + '", "publish_date":"' + pub + '", "description":"' + desc + '"}';
+
+			// convert to object
+			var bookobj = JSON.parse(text);
+			
+			// store in array
+			allbooks.push(bookobj)
+		}
+	}
+	
+	// print each book 
+	document.writeln("<h2>CATALOG</h2>");
+  	for ( let i = 0; i < allbooks.length ; i++ ) {
+		document.writeln("</br><h3>Book (" + (i+1) + ")</h3></br>");
+		
+		document.writeln("Author: " + allbooks[i].author + "<br>");
+		document.writeln("Title: " + allbooks[i].title + "<br>");
+		document.writeln("Genre: " + allbooks[i].genre + "<br>");
+		document.writeln("Price: " + allbooks[i].price + "<br>");
+		document.writeln("Publish Date: " + allbooks[i].publish_date + "<br>");
+		document.writeln("Description: " + allbooks[i].description + "<br>");
+	}
+	
+	document.writeln('<br><br><a href="XML_JS_JSON.html">Back to XML to JS</a><br>');
+
+} // End function
+
+</script>
+</head>
+
+<body>
+<!-- Header -->
+		<div id="header">
+			<h1><b>Computer Engineering Computing Science - Web Programming</b></h1>
+		</div>
+		
+		<div id="container">
+		
+		<!-- Menu -->
+		<div id="menu">
+			<a href="XML_JS_JSON.html">XML to JS</a><br>
+		</div>
+		
+		<!-- Main Content -->
+		<div id="content">
+			<h3>Lab 10- Displaying Array of JSON objects </h3>
+    
+			<table>      
+					<tr>			    
+						<td><input onclick="convertXMLtoJSON()" name="btnConvertJSON" id="btnConvertJSON" value="JSONDisplay!" type="button"></td>
+					</tr>       
+		   </table>
+		</div>
+		
+		</div>
+		
+		<!-- Footer -->
+		<div id="footer">			
+			<p>Mostapha A - algonquin</p>				
+		</div>
+</body>
+</html>
